@@ -1,24 +1,24 @@
-# WireOS - /anki folder
+# WiseOS - /anki folder
 
-**This is where the personality code for WireOS exists.**
+**This is where the personality code for WiseOS exists.**
 
-For the entire OS, check out the [wire-os](https://github.com/os-vector/wire-os) repo. This repo, `wire-os-victor`, is a submodule of that, and just builds the /anki folder which goes into that OS. However, `wire-os-victor` can still be built standalone and deployed to a robot which is running a good base OTA. This is recommended for developers.
+For the entire OS, check out the [wise-os](https://github.com/Phu1237/vector-wise-pod) repo. This repo, `wise-os-victor`, is a submodule of that, and just builds the /anki folder which goes into that OS. However, `wise-os-victor` can still be built standalone and deployed to a robot which is running a good base OTA. This is recommended for developers.
 
 Most changes happen in this repo. If one wants to, for instance, add a new feature; this is where they'd do it.
 
-If you want to add a program to the OS, do that in [wire-os](https://github.com/os-vector/wire-os).
+If you want to add a program to the OS, do that in [wise-os](https://github.com/Phu1237/vector-wise-pod).
 
 Check [vector-docs](https://os-vector.github.io/vector-docs) for more information about the source code leak, what we can do with this, and general Vector info.
 
-## What is WireOS?
+## What is WiseOS?
 
-WireOS serves as a stable, up-to-date, easily-buildable base for CFW, and is a continuation of Anki's work.
+WiseOS serves as a stable, up-to-date, easily-buildable base for CFW, and is a continuation of Anki's work.
 
-Any feature added here should be somewhat objectively applicable to other CFW. Feel free to make a PR. Wire encourages PRs which add things like 3rd-party library upgrades, new behaviors which Anki might have planned to add, code documentation, and optimizations. Wire discourages PRs which significantly alter the experience, like transforming him into a (soulless) GPT box or making him into Cozmo. If you want to do something like that, make your own CFW (instructions in [vector-docs](https://os-vector.github.io/vector-docs)).
+Any feature added here should be somewhat objectively applicable to other CFW. Feel free to make a PR. Wise encourages PRs which add things like 3rd-party library upgrades, new behaviors which Anki might have planned to add, code documentation, and optimizations. Wise discourages PRs which significantly alter the experience, like transforming him into a (soulless) GPT box or making him into Cozmo. If you want to do something like that, make your own CFW (instructions in [vector-docs](https://os-vector.github.io/vector-docs)).
 
 ## Building
 
-`wire-os-victor` can be built standalone on most Linux distros (arm64 or amd64), and on macOS (arm64 only, for now).
+`wise-os-victor` can be built standalone on most Linux distros (arm64 or amd64), and on macOS (arm64 only, for now).
 
 Docker is recommended for now (especially if you have a weird or old Linux distro installed), though bare metal works nicely too.
 
@@ -36,8 +36,8 @@ Click an option below for instructions.
 
 ```
 cd ~
-git clone --recurse-submodules https://github.com/os-vector/wire-os-victor
-cd wire-os-victor
+git clone --recurse-submodules https://github.com/os-vector/wise-os-victor
+cd wise-os-victor
 ```
 
 2. Make sure you can run Docker as a normal user. This will probably involve:
@@ -52,7 +52,7 @@ sudo chmod 660 /var/run/docker.sock
 
 3. Run the build script:
 ```
-cd ~/wire-os-victor
+cd ~/wise-os-victor
 ./build/build-v.sh
 ```
 
@@ -78,8 +78,8 @@ sudo dnf install -y git wget curl openssl ninja-build gcc gcc-c++ pkgconf-pkg-co
 
 ```
 cd ~
-git clone --recurse-submodules https://github.com/os-vector/wire-os-victor
-cd wire-os-victor
+git clone --recurse-submodules https://github.com/os-vector/wise-os-victor
+cd wise-os-victor
 ```
 
 2. Source `setenv.sh`:
@@ -111,13 +111,13 @@ vbuild
 
 ```
 cd ~
-git clone --recurse-submodules https://github.com/os-vector/wire-os-victor
+git clone --recurse-submodules https://github.com/os-vector/wise-os-victor
 cd victor
 ```
 
 2. Run the build script:
 ```
-cd ~/wire-os-victor
+cd ~/wise-os-victor
 ./build/build-v.sh
 ```
 
@@ -125,7 +125,7 @@ cd ~/wire-os-victor
 
 ## Deploying
 
-1. Install WireOS on your robot.
+1. Install WiseOS on your robot.
 2. Get your robot's IP through CCIS:
   - 1. Place your robot on the charger
   - 2. Double click the button

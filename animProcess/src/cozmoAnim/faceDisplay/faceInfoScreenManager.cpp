@@ -66,9 +66,9 @@
 #endif
 
 // CHANGE THIS TO BE YOUR PROJECT'S STUFF
-const std::string OSProject = "WireOS";
-const std::string Creator = "By Wire/kercre123";
-const std::string CreatorWebsite = "kerigan.dev";
+const std::string OSProject = "WiseOS";
+const std::string Creator = "By Phu1237";
+const std::string CreatorWebsite = "https://github.com/Phu1237";
 
 // Log options
 #define LOG_CHANNEL    "FaceInfoScreenManager"
@@ -128,10 +128,10 @@ namespace {
   std::atomic<bool> _testingNetwork{true};
   std::atomic<CloudMic::ConnectionCode> _networkStatus{CloudMic::ConnectionCode::Connectivity};
 
-  // How often connectivity checks are performed while on 
+  // How often connectivity checks are performed while on
   // Main and Network screens.
   const u32 kIPCheckPeriod_sec = 20;
-  
+
   const f32 kAlexaTimeout_s = 5.0f;
 
   const char* kAlexaIconSpriteName = "face_alexa_icon";
@@ -174,7 +174,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
 
   _context = context;
   _animationStreamer = animStreamer;
-  
+
   // allow us to send debug info out to the web server
   _webService = context->GetWebService();
 
@@ -238,7 +238,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   ADD_SCREEN(AlexaPairingExpired, AlexaPairingExpired);
   ADD_SCREEN(ToggleMute, ToggleMute);
   ADD_SCREEN(AlexaNotification, AlexaNotification);
-  
+
   if (hideSpecialDebugScreens) {
     ADD_SCREEN(MicInfo, BuildInfo);
   } else {
@@ -247,7 +247,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
 
   ADD_SCREEN(MicDirectionClock, Camera);
   ADD_SCREEN(CameraMotorTest, Camera);
-  
+
   if(IsWhiskey())
   {
     ADD_SCREEN(Camera, ToF);
@@ -261,7 +261,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   ADD_SCREEN(BuildInfo, Main); // Last screen cycles back to Main
 
 
-  // ========== Screen Customization ========= 
+  // ========== Screen Customization =========
   // Enter/Exit fcns, menu items, timeouts
 
   // === None screen ===
@@ -296,7 +296,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
 
 
   // === Custom screen ===
-  // Give the customText screen an exit action of resetting its timeout back to default, 
+  // Give the customText screen an exit action of resetting its timeout back to default,
   // since elsewhere we modify it when using it
   auto customTextEnterFcn = [this]() {
     DrawCustomText();
@@ -330,7 +330,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   };
   ADD_MENU_ITEM_WITH_ACTION(SelfTest, "CONFIRM", confirmSelfTest);
   DISABLE_TIMEOUT(SelfTestRunning);
-  
+
   // Clear User Data menu
   FaceInfoScreen::MenuItemAction confirmClearUserData = [this]() {
     // Write this file to indicate that the data partition should be wiped on reboot
@@ -366,7 +366,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   ADD_MENU_ITEM(Recovery, "CONTINUE", None);
   DISABLE_TIMEOUT(Recovery);
 
-    
+
   // === Camera screen ===
   FaceInfoScreen::ScreenAction cameraEnterAction = [this]() {
     StreamCameraImages m;
@@ -382,7 +382,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   };
   SET_ENTER_ACTION(Camera, cameraEnterAction);
   SET_EXIT_ACTION(Camera, cameraExitAction);
-  
+
   // === Mirror Mode ===
   // Engine requests this screen so it is assumed that Engine is already
   // set to send us images
@@ -395,7 +395,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   SET_ENTER_ACTION(MirrorMode, mirrorEnterAction);
   SET_EXIT_ACTION(MirrorMode, mirrorExitAction);
   DISABLE_TIMEOUT(MirrorMode); // Let toggling the associated VisionMode handle turning this on/off
-  
+
   // === AlexaPairing ===
   auto alexaEnterAction = [this]() {
     DrawAlexaFace();
@@ -408,7 +408,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   SET_TIMEOUT(AlexaPairingSuccess, kAlexaTimeout_s, None);
   SET_TIMEOUT(AlexaPairingFailed,  kAlexaTimeout_s, None);
   SET_TIMEOUT(AlexaPairingExpired, kAlexaTimeout_s, None);
-  
+
   // === Toggling mute ===
   auto toggleMuteEnterAction = [this]() {
     DrawMuteAnimation();
@@ -416,14 +416,14 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   SET_ENTER_ACTION(ToggleMute, toggleMuteEnterAction);
   // TODO (VIC-11606): don't use timeout and instead wait for mute anim to end
   SET_TIMEOUT(ToggleMute, kToggleMuteTimeout_s, None);
-  
+
   // === AlexaNotification ===
   auto alexaNotification = [this]() {
     DrawAlexaNotification();
   };
   SET_ENTER_ACTION(AlexaNotification, alexaNotification);
   SET_TIMEOUT(AlexaNotification, kAlexaNotificationTimeout_s, None);
-  
+
   // === Camera Motor Test ===
   // Add menu item to camera screen to start a test mode where the motors run back and forth
   // and camera images are streamed to the face
@@ -439,7 +439,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
 
   if(IsWhiskey())
   {
-    // ToF screen 
+    // ToF screen
     FaceInfoScreen::ScreenAction enterToFScreen = []() {
                                                     RobotInterface::SendRangeData msg;
                                                     msg.enable = true;
@@ -447,7 +447,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
                                                   };
     SET_ENTER_ACTION(ToF, enterToFScreen);
 
-    // ToF screen 
+    // ToF screen
     FaceInfoScreen::ScreenAction exitToFScreen = []() {
                                                    RobotInterface::SendRangeData msg;
                                                    msg.enable = false;
@@ -456,7 +456,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
     SET_EXIT_ACTION(ToF, exitToFScreen);
   }
 
-  
+
   // Check if we booted in recovery mode
   if (OSState::getInstance()->IsInRecoveryMode()) {
     LOG_WARNING("FaceInfoScreenManager.Init.RecoveryModeFileFound", "Going into recovery mode");
@@ -613,7 +613,7 @@ void FaceInfoScreenManager::DrawFAC()
 {
   DrawTextOnScreen({"FAC"},
                    NamedColors::BLACK,
-                   (Factory::GetEMR()->fields.PLAYPEN_PASSED_FLAG ? 
+                   (Factory::GetEMR()->fields.PLAYPEN_PASSED_FLAG ?
 		    NamedColors::GREEN : NamedColors::RED),
                    { 0, FACE_DISPLAY_HEIGHT-10 },
                    10,
@@ -629,10 +629,10 @@ void FaceInfoScreenManager::UpdateFAC()
   {
     DrawFAC();
   }
-  
+
   prevPlaypenPassedFlag = curPlaypenPassedFlag;
 }
-  
+
 void FaceInfoScreenManager::DrawCameraImage(const Vision::ImageRGB565& img)
 {
   if (GetCurrScreenName() != ScreenName::Camera &&
@@ -700,7 +700,7 @@ void FaceInfoScreenManager::DrawConfidenceClock(
       if (currentTime > nextWebServerUpdateTime)
       {
         nextWebServerUpdateTime = currentTime + 0.1;
-        
+
         Json::Value webData;
         webData["time"] = currentTime;
         webData["confidence"] = micData.confidence;
@@ -713,19 +713,19 @@ void FaceInfoScreenManager::DrawConfidenceClock(
         webData["delayTime"] = delayTime_ms;
         webData["latestPowerValue"] = (double)micData.latestPowerValue;
         webData["latestNoiseFloor"] = (double)micData.latestNoiseFloor;
-        
+
         Json::Value& directionValues = webData["directions"];
         for ( float confidence : micData.confidenceList )
         {
           directionValues.append(confidence);
         }
-        
+
         // Beat Detection stuff
         Json::Value& beatInfo = webData["beatDetector"];
         const auto& latestBeat = _context->GetMicDataSystem()->GetLatestBeatInfo();
         beatInfo["confidence"] = latestBeat.confidence;
         beatInfo["tempo_bpm"] = latestBeat.tempo_bpm;
-        
+
         _webService->SendToWebViz( kWebVizModuleName, webData );
       }
     }
@@ -929,10 +929,10 @@ void FaceInfoScreenManager::DrawConfidenceClock(
   DrawScratch();
 }
 
-void FaceInfoScreenManager::CheckForButtonEvent(const bool buttonPressed, 
+void FaceInfoScreenManager::CheckForButtonEvent(const bool buttonPressed,
                                                 bool& buttonPressedEvent,
                                                 bool& buttonReleasedEvent,
-                                                bool& singlePressDetected, 
+                                                bool& singlePressDetected,
                                                 bool& doublePressDetected)
 {
   static u32  lastPressTime_ms   = 0;
@@ -979,8 +979,8 @@ void FaceInfoScreenManager::CheckForButtonEvent(const bool buttonPressed,
   }
 
   // Check if button was held down long enough for shutdown animation to start
-  const bool shouldTriggerShutdown = buttonPressed && 
-                                     (lastPressTime_ms > 0) && 
+  const bool shouldTriggerShutdown = buttonPressed &&
+                                     (lastPressTime_ms > 0) &&
                                      (curTime_ms - lastPressTime_ms > kButtonPressDurationForShutdown_ms) &&
                                      (GetCurrScreenName() == ScreenName::None);
   if (shouldTriggerShutdown && !shutdownSent) {
@@ -993,7 +993,7 @@ void FaceInfoScreenManager::CheckForButtonEvent(const bool buttonPressed,
     doublePressDetected = false;
     shutdownSent        = true;
   }
-  
+
 #if ANKI_DEV_CHEATS
   if( kFakeButtonPressType == 1 ) { // single press
     singlePressDetected = true;
@@ -1021,10 +1021,10 @@ void FaceInfoScreenManager::ProcessMenuNavigation(const RobotState& state)
   bool buttonReleasedEvent;
   bool singlePressDetected;
   bool doublePressDetected;
-  CheckForButtonEvent(buttonIsPressed, 
-                      buttonPressedEvent, 
-                      buttonReleasedEvent, 
-                      singlePressDetected, 
+  CheckForButtonEvent(buttonIsPressed,
+                      buttonPressedEvent,
+                      buttonReleasedEvent,
+                      singlePressDetected,
                       doublePressDetected);
 
   const bool isOnCharger = static_cast<bool>(state.status & (uint32_t)RobotStatusFlag::IS_ON_CHARGER);
@@ -1047,7 +1047,7 @@ void FaceInfoScreenManager::ProcessMenuNavigation(const RobotState& state)
   }
 
   // Check for conditions to enter BLE pairing mode
-  if (doublePressDetected && 
+  if (doublePressDetected &&
       isOnCharger &&
       // Only enter pairing from these three screens which include
       // screens that are normally active during playpen test
@@ -1140,7 +1140,7 @@ void FaceInfoScreenManager::ProcessMenuNavigation(const RobotState& state)
 
     if (!_liftTriggerReady && (liftRange_rad > kMenuLiftRange_rad)) {
       _liftTriggerReady = true;
-    } else if (_liftTriggerReady && 
+    } else if (_liftTriggerReady &&
                (Util::Abs(liftAngle - _liftLowestAngle_rad) < kMenuAngularTriggerThresh_rad)) {
       // Menu item confirmed. Go to next screen.
       _liftTriggerReady = false;
@@ -1153,7 +1153,7 @@ void FaceInfoScreenManager::ProcessMenuNavigation(const RobotState& state)
         SetScreen(ScreenName::Main);
 
         // DAS msg for entering customer care screen
-        // Note: The debug info screens will only be reported unlocked here if they 
+        // Note: The debug info screens will only be reported unlocked here if they
         //       were unlocked the previous time the customer care screen was entered.
         DASMSG(robot_cc_screen_enter, "robot.cc_screen_enter", "Entered customer care screen");
         DASMSG_SET(i1, _debugInfoScreensUnlocked ? 1 : 0, "Debug info screens unlocked");
@@ -1181,7 +1181,7 @@ void FaceInfoScreenManager::ProcessMenuNavigation(const RobotState& state)
 
     if (!_headTriggerReady && (headRange_rad > kMenuHeadRange_rad)) {
       _headTriggerReady = true;
-    } else if (_headTriggerReady && 
+    } else if (_headTriggerReady &&
                (Util::Abs(headAngle - _headLowestAngle_rad) < kMenuAngularTriggerThresh_rad)) {
       // Menu item confirmed. Go to first debug info screen
       _headTriggerReady = false;
@@ -1214,7 +1214,7 @@ void FaceInfoScreenManager::Update(const RobotState& state)
         lastTime = now;
         DrawMain();
       }
-      break; 
+      break;
     }
     case ScreenName::Network:
     {
@@ -1223,15 +1223,15 @@ void FaceInfoScreenManager::Update(const RobotState& state)
       if (_redrawNetwork) {
         _redrawNetwork = false;
         DrawNetwork();
-      } 
+      }
 
       if ( !FACTORY_TEST && ((now - lastTime) > kIPCheckPeriod_sec) ) {
-        LOG_INFO("FaceInfoScreenManager.Update.CheckingConnectivity", "");  
-        _context->GetMicDataSystem()->RequestConnectionStatus();   
-        _testingNetwork = true;  
+        LOG_INFO("FaceInfoScreenManager.Update.CheckingConnectivity", "");
+        _context->GetMicDataSystem()->RequestConnectionStatus();
+        _testingNetwork = true;
         lastTime = now;
       }
-      break; 
+      break;
     }
     case ScreenName::SensorInfo:
       DrawSensorInfo(state);
@@ -1319,7 +1319,7 @@ void FaceInfoScreenManager::DrawMain()
   ColoredTextLines lines = { { {serialNo}, {hwVer, NamedColors::WHITE, false} },
                              {osProject},
                              {osVer},
-                             {ssid}, 
+                             {ssid},
 #if FACTORY_TEST
                              {"IP: " + ip},
 #else
@@ -1345,7 +1345,7 @@ void FaceInfoScreenManager::DrawNetwork()
   std::tm timeObj;
   char timeFormat[50];
   const bool gotTime = WallTime::getInstance()->GetUTCTime(timeObj);
-  
+
   strftime(timeFormat, 50, "%F %R UTC", &timeObj);
   const std::string currTime = gotTime ? timeFormat : "NO CLOCK";
 
@@ -1582,7 +1582,7 @@ void FaceInfoScreenManager::DrawCustomText()
                              _customText.bgColor.b),
                    { 0, FACE_DISPLAY_HEIGHT-10 }, 10, 3.f);
 }
-  
+
 void FaceInfoScreenManager::DrawAlexaFace()
 {
   if ( nullptr == _currScreen )
@@ -1617,7 +1617,7 @@ void FaceInfoScreenManager::DrawAlexaFace()
     float         scale = 1.0f;
   };
   std::vector<TextDataLine> textVec;
-  
+
   switch ( _currScreen->GetName() )
   {
     case ScreenName::AlexaPairing:
@@ -1692,7 +1692,7 @@ void FaceInfoScreenManager::DrawAlexaFace()
   headAction.accel_rad_per_sec2 = MAX_HEAD_ACCEL_RAD_PER_S2;
   SendAnimToRobot(std::move(headAction));
 }
-  
+
 void FaceInfoScreenManager::DrawMuteAnimation()
 {
   if( _currScreen == nullptr ) {
@@ -1705,9 +1705,9 @@ void FaceInfoScreenManager::DrawMuteAnimation()
   const bool shouldInterrupt = true;
   const bool overrideAllSpritesToEyeColor = true;
   _animationStreamer->SetStreamingAnimation(animName, 0, 1, 0, shouldInterrupt, overrideAllSpritesToEyeColor);
-  
+
 }
-  
+
 void FaceInfoScreenManager::DrawAlexaNotification()
 {
   if( _currScreen == nullptr ) {
@@ -1770,7 +1770,7 @@ void FaceInfoScreenManager::DrawTextOnScreen(const ColoredTextLines& lines,
     for(const auto& coloredText : line)
     {
       f32 textLocX = textOffsetX;
-      
+
       auto bbox = Vision::Image::GetTextSize(coloredText.text.c_str(), textScale, textLineThickness);
       if(coloredText.leftAlign)
       {
@@ -1783,7 +1783,7 @@ void FaceInfoScreenManager::DrawTextOnScreen(const ColoredTextLines& lines,
         textLocX = FACE_DISPLAY_WIDTH - bbox.x() - textOffsetXRight;
         textOffsetXRight += bbox.x();
       }
-      
+
       _scratchDrawingImg->DrawText({textLocX, textLocY},
                                    coloredText.text.c_str(),
                                    coloredText.color,
@@ -1804,7 +1804,7 @@ void FaceInfoScreenManager::DrawToF(const RangeDataDisplay& data)
   {
     return;
   }
-  
+
   Vision::ImageRGB565& img = *_scratchDrawingImg;
   const auto& clearColor = NamedColors::BLACK;
   img.FillWith( {clearColor.r(), clearColor.g(), clearColor.b()} );
@@ -1815,7 +1815,7 @@ void FaceInfoScreenManager::DrawToF(const RangeDataDisplay& data)
   for(const auto& rangeData : data.data)
   {
     int roi = rangeData.roi;
-    
+
     const u32 x = (roi % 4) * gridWidth;
     const u32 y = (roi / 4) * gridHeight;
     const Rectangle<f32> rect(x, y, gridWidth-1, gridHeight-1); // -1 for 1 pixel borders
@@ -1847,7 +1847,7 @@ void FaceInfoScreenManager::DrawToF(const RangeDataDisplay& data)
 
     const float kTextScale = 0.3f;
     const int kTextThickness = 1;
-    
+
     // Draw three things in each cell, distance (top left), status (top right), and signal quality (bottom left)
     Point2f loc(x, y + 8); // Draw text 8 pixels below top cell border
     const u8 textColor = (color > 128 ? 255 : 0); // Make text color opposite of background for readability
@@ -1879,8 +1879,8 @@ void FaceInfoScreenManager::DrawToF(const RangeDataDisplay& data)
                  kTextScale,
                  false,
                  kTextThickness);
-  }  
-  
+  }
+
   DrawScratch();
 }
 
@@ -1897,7 +1897,7 @@ void FaceInfoScreenManager::EnablePairingScreen(bool enable)
     SetScreen(ScreenName::None);
   }
 }
-  
+
 void FaceInfoScreenManager::EnableAlexaScreen(ScreenName screenName, const std::string& code, const std::string& url)
 {
   const bool validNewScreen = IsAlexaScreen(screenName) || (screenName == ScreenName::None);
@@ -1906,10 +1906,10 @@ void FaceInfoScreenManager::EnableAlexaScreen(ScreenName screenName, const std::
   {
     return;
   }
-  
+
   const auto currScreen = GetCurrScreenName();
   const bool isAlexaScreen = IsAlexaScreen(currScreen);
-  
+
   if ((screenName == ScreenName::AlexaPairing) && (GetCurrScreenName() != ScreenName::AlexaPairing)) {
     _alexaCode = code;
     _alexaUrl = url;
@@ -1934,7 +1934,7 @@ void FaceInfoScreenManager::EnableAlexaScreen(ScreenName screenName, const std::
     SetScreen(ScreenName::None);
   }
 }
-  
+
 void FaceInfoScreenManager::ToggleMute(const std::string& reason)
 {
   _context->GetMicDataSystem()->ToggleMicMute();
@@ -1949,7 +1949,7 @@ void FaceInfoScreenManager::ToggleMute(const std::string& reason)
     DASMSG_SET(s1, reason, "reason (how it was toggled)");
     DASMSG_SEND();
   }
-  
+
   if ((_currScreen != nullptr) && (_currScreen->GetName() == ScreenName::ToggleMute)) {
     // abort current animation and restart new one
     DrawMuteAnimation();
@@ -1958,20 +1958,20 @@ void FaceInfoScreenManager::ToggleMute(const std::string& reason)
     SetScreen(ScreenName::ToggleMute);
   }
 }
-  
+
 void FaceInfoScreenManager::StartAlexaNotification()
 {
   SetScreen(ScreenName::AlexaNotification);
 }
-  
+
 void FaceInfoScreenManager::EnableMirrorModeScreen(bool enable)
 {
   // As long as we're not in a screen that's already doing mirror mode
   // and we are not on the pairing screen
   // don't jump to the mirror mode screen
-  if (GetCurrScreenName() != ScreenName::Camera && 
+  if (GetCurrScreenName() != ScreenName::Camera &&
       GetCurrScreenName() != ScreenName::CameraMotorTest &&
-      GetCurrScreenName() != ScreenName::Pairing) {  
+      GetCurrScreenName() != ScreenName::Pairing) {
 
     if (enable && GetCurrScreenName() != ScreenName::MirrorMode) {
       LOG_INFO("FaceInfoScreenManager.EnableMirrorModeScreen.Enable", "");
@@ -1980,7 +1980,7 @@ void FaceInfoScreenManager::EnableMirrorModeScreen(bool enable)
       LOG_INFO("FaceInfoScreenManager.EnableMirrorModeScreen.Disable", "");
       SetScreen(ScreenName::None);
     }
-    
+
   }
 }
 
@@ -2052,7 +2052,7 @@ void FaceInfoScreenManager::UpdateCameraTestMode(uint32_t curTime_ms)
     head.duration_sec = alternateTime_ms / 1000.f;
     head.max_speed_rad_per_sec = MAX_HEAD_SPEED_RAD_PER_S;
     head.accel_rad_per_sec2 = MAX_HEAD_ACCEL_RAD_PER_S2;
-      
+
     RobotInterface::SetLiftHeight lift;
     lift.height_mm = (up ? LIFT_HEIGHT_CARRY : 50);
     lift.duration_sec = alternateTime_ms / 1000.f;
@@ -2093,7 +2093,7 @@ bool FaceInfoScreenManager::CanEnterPairingFromScreen( const ScreenName& screenN
       return false;
   }
 }
-  
+
 bool FaceInfoScreenManager::IsAlexaScreen(const ScreenName& screenName) const
 {
   switch (screenName) {
@@ -2106,7 +2106,7 @@ bool FaceInfoScreenManager::IsAlexaScreen(const ScreenName& screenName) const
       return false;
   }
 }
-  
+
 bool FaceInfoScreenManager::ScreenNeedsWait(const ScreenName& screenName) const
 {
   switch (screenName) {
@@ -2132,10 +2132,10 @@ void FaceInfoScreenManager::SelfTestEnd(Anim::AnimationStreamer* animStreamer)
 
   animStreamer->EnableKeepFaceAlive(true, 0);
   _context->GetBackpackLightComponent()->SetSelfTestRunning(false);
-  
+
   SetScreen(ScreenName::Main);
 }
-  
+
 void FaceInfoScreenManager::ExitCCScreen(Anim::AnimationStreamer* animStreamer)
 {
   const ScreenName curScreen = FaceInfoScreenManager::getInstance()->GetCurrScreenName();
@@ -2144,7 +2144,7 @@ void FaceInfoScreenManager::ExitCCScreen(Anim::AnimationStreamer* animStreamer)
     animStreamer->EnableKeepFaceAlive(true, 0);
     _context->GetBackpackLightComponent()->SetSelfTestRunning(false);
   }
-  
+
   SetScreen(ScreenName::None);
 }
 
