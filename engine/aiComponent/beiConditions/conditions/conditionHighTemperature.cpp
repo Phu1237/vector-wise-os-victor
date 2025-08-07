@@ -34,8 +34,8 @@ namespace
   // docking to the charger.
   const int kBatteryOverheatingThreshold_degC = 55;
 
-  // i don't LIKE it
-  const bool skipOverheatCheck = true;
+  // prevent overheat
+  const bool skipOverheatCheck = false;
 }
 
 ConditionHighTemperature::ConditionHighTemperature(const Json::Value& config)
